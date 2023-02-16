@@ -45,6 +45,11 @@ public class ClanUserController {
         return repository.findClanUsersByClan(clan);
     }
 
+    /**
+     * Gets all users.
+     *
+     * @return a List of all ClanUsers.
+     */
     @GetMapping("/all")
     public List<ClanUser> getUsers() {
         return repository.findAll();

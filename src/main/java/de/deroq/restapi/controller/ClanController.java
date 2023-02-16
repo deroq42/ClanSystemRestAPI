@@ -50,6 +50,12 @@ public class ClanController {
         return repository.findClanByClanTag(tag);
     }
 
+    /**
+     * Gets the clan by its member.
+     *
+     * @param member The uuid of the user.
+     * @return the Clan which contains the member with the uuid {@code member} or null if not found.
+     */
     @GetMapping("/get/member/{member}")
     public Clan getClanByMember(@PathVariable String member) {
         return getClans()
@@ -59,6 +65,11 @@ public class ClanController {
                 .orElseThrow(() -> new ClanNotFoundException("Clan with member " + member + " was not found"));
     }
 
+    /**
+     * Gets all clans.
+     *
+     * @return a List of all Clans.
+     */
     @GetMapping("/all")
     public List<Clan> getClans() {
         return repository.findAll();

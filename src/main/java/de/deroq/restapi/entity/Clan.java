@@ -3,6 +3,7 @@ package de.deroq.restapi.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * @since 15.02.2023
  */
 @Entity(name = "clans")
+@Getter
 public class Clan {
 
     @Id
@@ -25,22 +27,6 @@ public class Clan {
     private String clanTag;
 
     private String members;
-
-    public String getId() {
-        return id;
-    }
-
-    public String getClanName() {
-        return clanName;
-    }
-
-    public String getClanTag() {
-        return clanTag;
-    }
-
-    public String getMembers() {
-        return members;
-    }
 
     public boolean containsMember(String uuid) {
         return getMembersAsMap().containsKey(uuid);

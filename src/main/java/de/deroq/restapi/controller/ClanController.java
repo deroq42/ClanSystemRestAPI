@@ -6,13 +6,12 @@ import de.deroq.restapi.repository.ClanRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 /**
  * @author Miles
  * @since 15.02.2023
  */
 @RestController
-@RequestMapping("/clans")
+@RequestMapping("/clans/clan")
 public class ClanController {
 
     private final ClanRepository repository;
@@ -21,35 +20,37 @@ public class ClanController {
         this.repository = repository;
     }
 
-    @GetMapping("/id/{id}")
+    @PostMapping("/delete/id/{id}")
+    public Clan deleteClanById(@PathVariable String id) {
+        return repository.deleteClanById(id);
+    }
+
+    @PostMapping("/delete/name/{name}")
+    public Clan deleteClanByName(@PathVariable String name) {
+        return repository.deleteClanByClanName(name);
+    }
+
+    @PostMapping("/delete/tag/{tag}")
+    public Clan deleteClanByTag(@PathVariable String tag) {
+        return repository.deleteClanByClanTag(tag);
+    }
+
+    @GetMapping("/get/id/{id}")
     public Clan getClanById(@PathVariable String id) {
-        return getClans()
-                .stream()
-                .filter(clan -> clan.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ClanNotFoundException("Clan with id " + id + " was not found"));
+        return repository.findClanById(id);
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/get/name/{name}")
     public Clan getClanByName(@PathVariable String name) {
-        return getClans()
-                .stream()
-                .filter(clan -> clan.getClanName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new ClanNotFoundException("Clan with name " + name + " was not found"));
+        return repository.findClanByClanName(name);
     }
 
-    @GetMapping("/tag/{tag}")
+    @GetMapping("/get/tag/{tag}")
     public Clan getClanByTag(@PathVariable String tag) {
-        return getClans()
-                .stream()
-                .filter(clan -> clan.getClanTag().equals(tag))
-                .findFirst()
-                .orElseThrow(() -> new ClanNotFoundException("Clan with tag " + tag + " was not found"));
+        return repository.findClanByClanTag(tag);
     }
 
-
-    @GetMapping("/member/{member}")
+    @GetMapping("/get/member/{member}")
     public Clan getClanByMember(@PathVariable String member) {
         return getClans()
                 .stream()

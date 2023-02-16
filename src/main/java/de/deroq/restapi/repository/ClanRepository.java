@@ -10,4 +10,16 @@ import java.util.UUID;
  * @since 15.02.2023
  */
 public interface ClanRepository extends JpaRepository<Clan, UUID> {
+
+    Clan deleteClanById(String id);
+
+    Clan deleteClanByClanName(String name);
+
+    Clan deleteClanByClanTag(String tag);
+
+    Clan findClanById(String id);
+
+    Clan findClanByClanName(String name);
+
+    Clan findClanByClanTag(String tag);
 }

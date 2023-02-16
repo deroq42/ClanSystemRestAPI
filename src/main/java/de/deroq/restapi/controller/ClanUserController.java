@@ -1,23 +1,17 @@
 package de.deroq.restapi.controller;
 
 import de.deroq.restapi.entity.ClanUser;
-import de.deroq.restapi.exception.ClanUserNotFoundException;
 import de.deroq.restapi.repository.ClanUserRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Miles
  * @since 16.02.2023
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/clans/user")
 public class ClanUserController {
 
     private final ClanUserRepository repository;
@@ -26,28 +20,29 @@ public class ClanUserController {
         this.repository = repository;
     }
 
-    @GetMapping("/uuid/{uuid}")
+    @PostMapping("/delete/uuid/{uuid}")
+    public ClanUser deleteUserByUUID(@PathVariable String uuid) {
+        return repository.deleteClanUserByUuid(uuid);
+    }
+
+    @PostMapping("/delete/name/{name}")
+    public ClanUser deleteUserName(@PathVariable String name) {
+        return repository.deleteClanUserByName(name);
+    }
+
+    @GetMapping("/get/uuid/{uuid}")
     public ClanUser getUserByUUID(@PathVariable String uuid) {
-        return getUsers().stream()
-                .filter(user -> user.getUuid().equals(uuid))
-                .findFirst()
-                .orElseThrow(() -> new ClanUserNotFoundException("User with uuid " + uuid + " was not found"));
+        return repository.findClanUserByUuid(uuid);
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/get/name/{name}")
     public ClanUser getUserByName(@PathVariable String name) {
-        return getUsers().stream()
-                .filter(user -> user.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new ClanUserNotFoundException("User with name " + name + " was not found"));
+        return repository.findClanUserByName(name);
     }
 
-    @GetMapping("/clan/{clan}")
-    public Map<String, String> getUsersWithClan(@PathVariable String clan) {
-        return getUsers().stream()
-                .filter(user -> user.getClan() != null)
-                .filter(user -> user.getClan().equals(clan))
-                .collect(Collectors.toMap(ClanUser::getUuid, ClanUser::getName));
+    @GetMapping("/get/clan/{clan}")
+    public List<ClanUser> getUsersWithClan(@PathVariable String clan) {
+        return repository.findClanUsersByClan(clan);
     }
 
     @GetMapping("/all")
